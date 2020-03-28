@@ -1,17 +1,22 @@
 import React, { useState, useEffect } from "react";
 import Posts from "./components/Posts";
-// import SelectFilter from "./components/SelectFilter";
+import SelectFilter from "./components/SelectFilter";
 import Pagination from "./components/Pagination";
 import axios from "axios";
 import "./App.css";
+import "bootstrap/dist/css/bootstrap.css";
+
 
 const App = () => {
   const [posts, setPosts] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
+
   const [postsPerPage] = useState(6);
-  // const [filter, setFilter] = useState(null);
-  // const [tags, setTags] = useState();
+  
+  const [filters, setFilter] = useState([]);
+  
+
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -19,7 +24,7 @@ const App = () => {
         "https://my-json-server.typicode.com/sreejith97/MyAPI/posts"
       );
       setPosts(res.data);
-      
+      setFilter(res.data);
     };
 
     fetchPosts();
@@ -27,20 +32,28 @@ const App = () => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-  
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+
+  let currentPosts = filters.slice(indexOfFirstPost, indexOfLastPost);
+
+
+  const paginate = pageNumber => {
+    setCurrentPage(pageNumber);
+  };
 
   return (
     <div className="container mt-5">
       {/* <SelectFilter /> */}
       <Posts posts={currentPosts} />
-      <Pagination 
+      <Pagination
         postsPerPage={postsPerPage}
-        totalPosts={posts.length}
+        totalPosts={filters.length}
         paginate={paginate}
+        // <h1>hello</h1>
       />
+      <SelectFilter setFilter={setFilter} posts={posts}  />
+      
+      
       
     </div>
   );
