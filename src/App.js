@@ -6,17 +6,11 @@ import axios from "axios";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.css";
 
-
 const App = () => {
   const [posts, setPosts] = useState([]);
-
   const [currentPage, setCurrentPage] = useState(1);
-
   const [postsPerPage] = useState(6);
-  
   const [filters, setFilter] = useState([]);
-  
-
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -33,9 +27,7 @@ const App = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
 
-
   let currentPosts = filters.slice(indexOfFirstPost, indexOfLastPost);
-
 
   const paginate = pageNumber => {
     setCurrentPage(pageNumber);
@@ -43,18 +35,13 @@ const App = () => {
 
   return (
     <div className="container mt-5">
-      {/* <SelectFilter /> */}
       <Posts posts={currentPosts} />
       <Pagination
         postsPerPage={postsPerPage}
         totalPosts={filters.length}
         paginate={paginate}
-        // <h1>hello</h1>
       />
-      <SelectFilter setFilter={setFilter} posts={posts}  />
-      
-      
-      
+      <SelectFilter setFilter={setFilter} posts={posts} />
     </div>
   );
 };
